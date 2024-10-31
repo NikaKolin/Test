@@ -2,6 +2,7 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all;
+USE IEEE.NUMERIC_STD.ALL;
 
 -- RAM entitiy - where the instructions will be stored (basic inputs and outputs)
 entity RAM is
@@ -35,4 +36,28 @@ begin
 end behavioral;
 
 --------------------------------------------------------------
--- InstructionDecoder Entity - where it will fetch and decode 
+--- Design entity - link between modules and test benth
+entity design is
+    Port ( CLK : in STD_LOGIC;
+           );        
+end design;
+
+architecture Behavioral of design is
+
+signal DATAIN_IN, DATAOUT_OUT : STD_LOGIC_VECTOR(31 DOWNTO 0);  
+signal ADDRESS_IN : STD_LOGIC_VECTOR(7 DOWNTO 0);
+signal W_R_IN : STD_LOGIC;
+
+Component RAM IS
+  PORT(
+       DATAIN : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+       ADDRESS : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+       W_R : IN STD_LOGIC;
+       DATAOUT : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+       );
+END Component;
+      
+Begin
+
+u1: RAM port map(DATAIN => DATAIN_IN, ADDRESS => ADDRESS_IN, W_R => W_R_IN, DATAOUT => DATAOUT_OUT);
+end Behavioral;
